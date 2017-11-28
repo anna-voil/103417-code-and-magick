@@ -26,7 +26,7 @@ function addBlackText(ctx, text, x, y) {
   ctx.fillText(text, x, y);
 }
 
-//вывод сообщения о выигрыше
+// вывод сообщения о выигрыше
 function youWin(ctx) {
   addBlackText(ctx, youWimText, startX, 50);
   addBlackText(ctx, resultsText, startX, 70);
@@ -76,23 +76,19 @@ function drawHistogram(ctx, startDraw, time, name, step) {
   ctx.fillRect(startDraw, startColY, colWidth, time * step);
 
   // вывод имен участников
-  ctx.fillText(name, startDraw, namesY);
+  // ctx.fillText(name, startDraw, namesY);
+  addBlackText(ctx, name, startDraw, namesY);
 
   // вывод округленых числовых значений
   ctx.fillText(Math.round(time), startDraw, timesY);
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // ОСНОВНАЯ ФУНКЦИЯ
 window.renderStatistics = function (ctx, names, times) {
   cloud(ctx); // облако
   var step = -columnHeight / maxItem(times); // максимальное время
   youWin(ctx); // заголовок
-
-
-
-  // addBlackText(ctx, times, startX, 90);
 
 
   // обозначения цветов шкал участников
@@ -102,35 +98,9 @@ window.renderStatistics = function (ctx, names, times) {
       ctx.fillStyle = 'rgba(255, 0, 0, 1)';
     }
 
-    var itemColumnStart = startX + colStep * j; //точка начала отрисовки колонок
+    var itemColumnStart = startX + colStep * j; // точка начала отрисовки колонок
 
     drawHistogram(ctx, itemColumnStart, times[j], names[j], step);
   }
 
-  // addBlackText(ctx, names, startX, 250);
-
 };
-
-
-/*
-
-
- Функция отрисовки столбика гистограммы — на вход координаты, ширина и высота столбика, цвет
-
-
-Макс. высота колонки 150рх
-
- После сообщения о победе должна располагаться гистограмма времен участников. Параметры гистограммы следующие:
-
- Высота гистограммы 150px.
-
- Ширина колонки 40px.
-
- Расстояние между колонками 50px.
-
- Цвет колонки игрока Вы rgba(255, 0, 0, 1).
-
- Цвета колонок других игроков — синие, а прозрачность задается случайным образом.
-
-
- */
