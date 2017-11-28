@@ -44,9 +44,15 @@ function maxItem(massive) {
   return (max);
 }
 
-function histogramItem(massive) {
 
-}
+// гистограмма
+var columnHeight = 150;
+var startColY = 250;
+var colStep = 50;
+var colWidth = 40;
+var namesY = 270;
+var timesY = 90;
+
 
 // случайное целое число в диапазоне 0, i
 function randomNum(j) {
@@ -64,24 +70,27 @@ function randomColor() {
   return 'rgba(' + randomNum(255) + ',' + randomNum(255) + ',' + randomNum(255) + ',' + randomNumFloat(0, 1) + ')';
 }
 
+
+function drawHistogram(ctx, startDraw, time, name, step) {
+  // пропорция шкал в соответствии со значениями
+  ctx.fillRect(startDraw, startColY, colWidth, time * step);
+
+  // вывод имен участников
+  ctx.fillText(name, startDraw, namesY);
+
+  // вывод округленых числовых значений
+  ctx.fillText(Math.round(time), startDraw, timesY);
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // ОСНОВНАЯ ФУНКЦИЯ
 window.renderStatistics = function (ctx, names, times) {
   cloud(ctx); // облако
-  // maxItem(times);// максимальное время
+  var step = -columnHeight / maxItem(times); // максимальное время
   youWin(ctx); // заголовок
 
 
-  // гистограмма
-  var columnHeight = 150;
-  var step = -columnHeight / maxItem(times);
-
-  var startColY = 250;
-  var colStep = 50;
-  var colWidth = 40;
-  var namesY = 270;
-  var timesY = 90;
 
   // addBlackText(ctx, times, startX, 90);
 
@@ -93,19 +102,15 @@ window.renderStatistics = function (ctx, names, times) {
       ctx.fillStyle = 'rgba(255, 0, 0, 1)';
     }
 
-    // пропорция шкал в соответствии со значениями
-    ctx.fillRect(startX + colStep * j, startColY, colWidth, times[j] * step);
+    var itemColumnStart = startX + colStep * j; //точка начала отрисовки колонок
 
-    // вывод имен участников
-    ctx.fillText(names[j], startX + colStep * j, namesY);
-
-    // вывод округленых числовых значений
-    ctx.fillText(Math.round(times[j]), startX + colStep * j, timesY);
+    drawHistogram(ctx, itemColumnStart, times[j], names[j], step);
   }
 
   // addBlackText(ctx, names, startX, 250);
 
 };
+
 
 /*
 
