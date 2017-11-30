@@ -27,7 +27,7 @@ function paintText(context, text, x, y, color) {
 
 
 // определяем наибольшее значение среди эл-тов массива
-function maxItem(arr) {
+function getMaxItem(arr) {
   var max = -1;
   for (var i = 0; i < arr.length; i++) {
     if (arr[i] > max) {
@@ -81,7 +81,7 @@ function drawHistogram(context, startDraw, time, name, step) {
 // ОСНОВНАЯ ФУНКЦИЯ
 window.renderStatistics = function (ctx, names, times) {
   drawCloud(ctx); // облако
-  var step = -columnHeight / maxItem(times); // максимальное время
+  var step = -columnHeight / getMaxItem(times); // максимальное время
 
   // вывод сообщения о выигрыше
   paintText(ctx, YOU_WIN_TEXT, startX, 50, '#000000');
