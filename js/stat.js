@@ -18,7 +18,7 @@ var RESULTS_TEXT = 'Список результатов:';
 
 
 // отрисовка текста на канвасе
-function paintText(context, text, x, y, color) {
+function drawText(context, text, x, y, color) {
   // св-ва текста
   context.font = '16px PT Mono';
   context.fillStyle = color;
@@ -70,11 +70,11 @@ function drawHistogram(context, startDraw, time, name, step) {
 
   // вывод имен участников
   // ctx.fillText(name, startDraw, namesY);
-  paintText(context, name, startDraw, namesY, '#000000');
+  drawText(context, name, startDraw, namesY, '#000000');
 
   // вывод округленых числовых значений
   // context.fillText(Math.round(time), startDraw, timesY);
-  paintText(context, Math.round(time), startDraw, timesY, '#000000');
+  drawText(context, Math.round(time), startDraw, timesY, '#000000');
 }
 
 
@@ -84,8 +84,8 @@ window.renderStatistics = function (ctx, names, times) {
   var step = -columnHeight / getMaxItem(times); // максимальное время
 
   // вывод сообщения о выигрыше
-  paintText(ctx, YOU_WIN_TEXT, startX, 50, '#000000');
-  paintText(ctx, RESULTS_TEXT, startX, 70, '#000000');
+  drawText(ctx, YOU_WIN_TEXT, startX, 50, '#000000');
+  drawText(ctx, RESULTS_TEXT, startX, 70, '#000000');
 
 
   // обозначения цветов шкал участников
