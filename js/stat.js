@@ -2,46 +2,39 @@
 var startX = 150;
 
 // вывод облака
-function cloud(abstractCtx) {
+function drawCloud(context) {
   // тень
-  abstractCtx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-  abstractCtx.fillRect(110, 20, 270, 420);
+  context.fillStyle = 'rgba(0, 0, 0, 0.7)';
+  context.fillRect(110, 20, 270, 420);
 
   // поле
-  abstractCtx.fillStyle = '#bddbfc';
-  abstractCtx.fillRect(100, 10, 270, 420);
+  context.fillStyle = '#bddbfc';
+  context.fillRect(100, 10, 270, 420);
 }
 
 // вывод заголовка
-var youWimText = 'Ура вы победили!';
-var resultsText = 'Список результатов:';
+var YOU_WIN_TEXT = 'Ура вы победили!';
+var RESULTS_TEXT = 'Список результатов:';
 
 
 // отрисовка текста на канвасе
-function addBlackText(ctx, text, x, y) {
+function paintText(context, text, x, y, color) {
   // св-ва текста
-  ctx.font = '16px PT Mono';
-  ctx.fillStyle = 'black';
-  ctx.fillStyle = '#000000';
-  ctx.fillText(text, x, y);
-}
-
-// вывод сообщения о выигрыше
-function youWin(ctx) {
-  addBlackText(ctx, youWimText, startX, 50);
-  addBlackText(ctx, resultsText, startX, 70);
+  context.font = '16px PT Mono';
+  context.fillStyle = color;
+  context.fillText(text, x, y);
 }
 
 
 // определяем наибольшее значение среди эл-тов массива
-function maxItem(massive) {
+function maxItem(arr) {
   var max = -1;
-  for (var i = 0; i < massive.length; i++) {
-    if (massive[i] > max) {
-      max = massive[i];
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] > max) {
+      max = arr[i];
     }
   }
-  return (max);
+  return max;
 }
 
 
@@ -54,53 +47,53 @@ var namesY = 270;
 var timesY = 90;
 
 
-// случайное целое число в диапазоне 0, i
-function randomNum(j) {
-  return Math.floor(Math.random() * (j + 1));
+// случайное целое число в диапазоне min, max
+function getRandomNum(min, max) {
+  return Math.round(getRandomNumFloat(min, max));
 }
 
 // случайное дробное число в диапазоне min, max (для прозрачности)
-function randomNumFloat(min, max) {
+function getRandomNumFloat(min, max) {
   return Math.random() * (max - min) + min;
 }
 
 
 // цвета со случайной прозрачностью
-function randomColor() {
-  return 'rgba(' + randomNum(255) + ',' + randomNum(255) + ',' + randomNum(255) + ',' + randomNumFloat(0, 1) + ')';
+function getRandomColor() {
+  return 'rgba(' + 0 + ',' + 0 + ',' + getRandomNum(0, 255) + ',' + getRandomNumFloat(0, 1) + ')';
 }
 
 
-function drawHistogram(ctx, startDraw, time, name, step) {
+function drawHistogram(context, startDraw, time, name, step) {
   // пропорция шкал в соответствии со значениями
-  ctx.fillRect(startDraw, startColY, colWidth, time * step);
+  context.fillRect(startDraw, startColY, colWidth, time * step);
 
   // вывод имен участников
   // ctx.fillText(name, startDraw, namesY);
-  addBlackText(ctx, name, startDraw, namesY);
+  paintText(context, name, startDraw, namesY, '#000000');
 
   // вывод округленых числовых значений
-  ctx.fillText(Math.round(time), startDraw, timesY);
+  // context.fillText(Math.round(time), startDraw, timesY);
+  paintText(context, Math.round(time), startDraw, timesY, '#000000');
 }
 
 
 // ОСНОВНАЯ ФУНКЦИЯ
 window.renderStatistics = function (ctx, names, times) {
-  cloud(ctx); // облако
+  drawCloud(ctx); // облако
   var step = -columnHeight / maxItem(times); // максимальное время
-  youWin(ctx); // заголовок
+
+  // вывод сообщения о выигрыше
+  paintText(ctx, YOU_WIN_TEXT, startX, 50, '#000000');
+  paintText(ctx, RESULTS_TEXT, startX, 70, '#000000');
 
 
   // обозначения цветов шкал участников
   for (var j = 0; j < times.length; j++) {
-    ctx.fillStyle = randomColor();
-    if (names[j] === 'Вы') {
-      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-    }
+    ctx.fillStyle = (names[j] === 'Вы') ? 'rgba(255, 0, 0, 1)' : getRandomColor(); // условие для выведения разных цветов с учетом текущего игрока
 
     var itemColumnStart = startX + colStep * j; // точка начала отрисовки колонок
 
     drawHistogram(ctx, itemColumnStart, times[j], names[j], step);
   }
-
 };
